@@ -9,15 +9,6 @@ from torch import Tensor
 import copy
 import os
 
-try:
-    from mmdet.models.builder import BACKBONES as det_BACKBONES
-    from mmdet.utils import get_root_logger
-    from mmcv.runner import _load_checkpoint
-    has_mmdet = True
-except ImportError:
-    print("If for detection, please install mmdetection first")
-    has_mmdet = False
-
 
 class Partial_conv3(nn.Module):
 

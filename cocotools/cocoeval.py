@@ -229,6 +229,9 @@ class COCOeval:
                 e = (dx**2 + dy**2) / vars / (gt['area']+np.spacing(1)) / 2
                 if k1 > 0:
                     e=e[vg > 0]
+                if e is None:
+                    return ious
+                e = e.numpy()
                 ious[i, j] = np.sum(np.exp(-e)) / e.shape[0]
         return ious
 

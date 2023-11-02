@@ -107,7 +107,7 @@ def handle_preds(preds: torch.Tensor, device, num_keypoints: int, conf_thresh=0.
       b = torch.tensor(b).to(device)
       c = torch.tensor(c).squeeze(1).to(device)
       s = torch.tensor(s).squeeze(1).to(device)
-      keep = torchvision.ops.batched_nms(b, s, c, nms_thresh)
+      keep = torchvision.ops.nms(b, s, nms_thresh)
       
       for i in keep:
         output.append(temp[i])
