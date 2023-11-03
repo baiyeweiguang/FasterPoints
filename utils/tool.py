@@ -66,7 +66,8 @@ def handle_preds(preds: torch.Tensor, device, num_keypoints: int, conf_thresh=0.
   pcls = pred[:, :, :, 1+num_keypoints*2:]
   
   # 置信度
-  objects[:, :, :, -1] = (pobj.squeeze(-1) ** 0.6) * (pcls.max(dim=-1)[0] ** 0.4)
+  # objects[:, :, :, -1] = (pobj.squeeze(-1) ** 0.6) * (pcls.max(dim=-1)[0] ** 0.4)
+  objects[:, :, :, -1] = pobj.squeeze(-1)
   objects[:, :, :, -2] = pcls.argmax(dim=-1)
    
   # 坐标

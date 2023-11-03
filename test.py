@@ -11,6 +11,7 @@ from module.faster_points import Detector
 
 def detect(img, model):
     import time
+    # img = cv2.imread('/mnt/yoloface-dataset/ArmorYolo/test/14912.jpg')
     ori_img = img.copy()
     res_img = cv2.resize(ori_img, (cfg.input_width, cfg.input_height), interpolation = cv2.INTER_LINEAR)
     # cv2.imshow
@@ -61,8 +62,8 @@ def detect(img, model):
             cv2.line(ori_img, (x1, y1), (x3, y3), (0, 255, 0), 2)
             cv2.line(ori_img, (x2, y2), (x4, y4), (0, 255, 0), 2)
 
-            cv2.putText(ori_img, '%.2f' % obj_score, (x1, y1 - 5), 0, 0.7, (0, 255, 0), 2)	
-            cv2.putText(ori_img, category, (x2, y2 - 25), 0, 0.7, (0, 255, 0), 2)
+            cv2.putText(ori_img, '{},{:.2f}'.format(category, obj_score), (x1, y1 - 5), 0, 0.7, (0, 255, 0), 2)	
+            # cv2.putText(ori_img, category, (x2, y2 - 25), 0, 0.7, (0, 255, 0), 2)
 
     return ori_img
 
@@ -132,15 +133,15 @@ if __name__ == '__main__':
 
 
     
-    video_capture = cv2.VideoCapture("/home/zcf/csurm/csurm-RMUC2022/10.avi")
+    video_capture = cv2.VideoCapture("/mnt/zcf/步兵.mp4")
     while True:
         ret, frame = video_capture.read()
         if frame is None:
             break
         result_img = detect(frame, model)
-        result_img = cv2.resize(result_img, (640, 480))
+        result_img = cv2.resize(result_img, (cfg.input_width, cfg.input_height))
         cv2.imshow('Video', result_img)
-        cv2.waitKey(10)
+        # cv2.waitKey(2)
         # break
         
         # cv2.imshow('Video', detect(frame, model))

@@ -79,7 +79,7 @@ class FastestDet:
                                                           batch_size=self.cfg.batch_size,
                                                           shuffle=True,
                                                           collate_fn=collate_fn,
-                                                          num_workers=4,
+                                                          num_workers=16,
                                                           drop_last=False,
                                                           persistent_workers=True
                                                           )
@@ -88,7 +88,7 @@ class FastestDet:
                                                             batch_size=self.cfg.batch_size,
                                                             shuffle=True,
                                                             collate_fn=collate_fn,
-                                                            num_workers=4,
+                                                            num_workers=16,
                                                             drop_last=True,
                                                             persistent_workers=True
                                                             )
@@ -132,12 +132,13 @@ class FastestDet:
 
             # 模型验证及保存
             if epoch % 10 == 0 and epoch > 0 and total < 2:
-            # if True:
-            #     # 模型评估
-                torch.save(self.model.state_dict(), "checkpoint/%d-epoch.pth"%(epoch))
                 self.model.eval()
-                print("computer mAP...")
-                mAP05 = self.evaluation.compute_map(self.val_dataloader, self.model)
+                # 模型评估
+                torch.save(self.model.state_dict(), "checkpoint/%d-epoch.pth"%(epoch))
+                if total < 1.5:
+                    print("computer mAP...")
+                    mAP05 = self.evaluation.compute_map(self.val_dataloader, self.model)
+                    print(mAP05)
 
             # 学习率调整
             self.scheduler.step()

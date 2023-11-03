@@ -33,7 +33,7 @@ class Detector(nn.Module):
         P = torch.cat((P1, P2, P3), dim=1)
         
         y = self.SPP(P)
-        
+
         return self.detect_head(y) 
     
 if __name__ == "__main__":

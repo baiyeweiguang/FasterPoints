@@ -72,6 +72,7 @@ class DetectorLoss(nn.Module):
         omiga_h = torch.abs(h1 - h2) / torch.max(h1, h2)
         shape_cost = torch.pow(1 - torch.exp(-1 * omiga_w), 4) + torch.pow(1 - torch.exp(-1 * omiga_h), 4)
         iou = iou - 0.5 * (distance_cost + shape_cost)
+        iou = torch.clamp(iou, 0.0, 1.0)
 
         return iou
         
@@ -122,7 +123,8 @@ class DetectorLoss(nn.Module):
         # 定义obj和cls的损失函数
         BCEcls = nn.NLLLoss() 
         # smmoth L1相比于bce效果最好
-        BCEobj = nn.SmoothL1Loss(reduction='none')
+        BCEobj = nn.BCELoss()
+        # BCEobj = nn.SmoothL1Loss(reduction='none')
         
         
         # 构建ground truth
@@ -173,7 +175,7 @@ class DetectorLoss(nn.Module):
            
             # 计算检测框IOU loss
             iou = self.bbox_iou(pt_box, gt_box)
-            
+
             # Filter
             f = iou > iou.mean()
             
@@ -197,7 +199,7 @@ class DetectorLoss(nn.Module):
             factor[b, gy, gx] =  (1. / (n[b] / (H * W))) * 0.25
 
         # 计算前背景分类分支loss
-        obj_loss = (BCEobj(pobj, tobj) * factor).mean() * 20
+        obj_loss = (BCEobj(pobj, tobj) * factor).mean() * 16
 
         # 计算总loss
         loss = obj_loss + lmk_loss + cls_loss                      

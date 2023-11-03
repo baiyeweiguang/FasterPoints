@@ -1,6 +1,18 @@
 import torch
 import torch.nn as nn
 
+class Conv1x1(nn.Module):
+    def __init__(self, input_channels, output_channels):
+        super(Conv1x1, self).__init__()
+        self.conv1x1 =  nn.Sequential(nn.Conv2d(input_channels, output_channels, 1, stride=1, padding=0, bias=False),
+                                      nn.BatchNorm2d(output_channels),
+                                      nn.ReLU(inplace=True)
+                                     )
+    
+    def forward(self, x):
+        return self.conv1x1(x)
+        
+
 class Head(nn.Module):
     def __init__(self, input_channels, output_channels):
         super(Head, self).__init__()
@@ -18,6 +30,7 @@ class DetectHead(nn.Module):
     def __init__(self, input_channels, category_num, landmark_num):
         super(DetectHead, self).__init__()
 
+        self.conv1x1 = Conv1x1(input_channels, input_channels)
         self.obj_layers = Head(input_channels, 1)
         self.reg_layers = Head(input_channels, landmark_num*2)
         self.cls_layers = Head(input_channels, category_num)
@@ -26,6 +39,7 @@ class DetectHead(nn.Module):
         self.softmax = nn.Softmax(dim=1)
         
     def forward(self, x):
+        x = self.conv1x1(x)
          
         obj = self.sigmoid(self.obj_layers(x))
         reg = self.reg_layers(x)

@@ -128,7 +128,9 @@ class TensorDataset():
             with open(label_path, 'r') as f:
                 for line in f.readlines():
                     l = line.strip().split(" ")
-                    c = (int(l[0]) - 1) % 9 
+                    c = int(l[0])
+                    if c > 17:
+                        continue
                     
                     x = (float(l[1]) + float(l[3]) + float(l[5]) + float(l[7])) / 4
                     y = (float(l[2]) + float(l[4]) + float(l[6]) + float(l[8])) / 4
