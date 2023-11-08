@@ -1,17 +1,17 @@
 DATASET:
-  TRAIN: "/home/zcf/FastestDet-main/SAU/train.txt"
-  VAL: "/home/zcf/FastestDet-main/SAU/val.txt"
+  TRAIN: "/mnt/zcf/MyDataset/train.txt"
+  VAL: "/mnt/zcf/MyDataset/val.txt"
   NAMES: "configs/armor.names"
 MODEL:
-  NC: 9
+  NC: 18
   NPTS: 4 
-  INPUT_WIDTH: 352
-  INPUT_HEIGHT: 352
+  INPUT_WIDTH: 416
+  INPUT_HEIGHT: 416
 TRAIN:
   LR: 0.001
   THRESH: 0.25
   WARMUP: true
-  BATCH_SIZE: 32
+  BATCH_SIZE: 128
   END_EPOCH: 500
   MILESTIONES:
     - 50

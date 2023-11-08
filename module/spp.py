@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+# from .aff import AFF
 
 class Conv1x1(nn.Module):
     def __init__(self, input_channels, output_channels):
@@ -59,6 +60,7 @@ class SPP(nn.Module):
         y3 = self.S3(x)
 
         y = torch.cat((y1, y2, y3), dim=1)
+        # y = self.relu(self.aff(x, self.output(y)))
         y = self.relu(x + self.output(y))
 
         return y

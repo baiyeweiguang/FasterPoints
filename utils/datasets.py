@@ -172,7 +172,7 @@ class TensorDataset():
 
     def __len__(self):
         return len(self.data_list)
-
+    
 if __name__ == "__main__":
     data = TensorDataset("/home/xuehao/Desktop/TMP/pytorch-yolo/widerface/train.txt")
     img, label = data.__getitem__(0)

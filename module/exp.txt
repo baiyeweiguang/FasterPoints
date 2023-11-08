@@ -1,0 +1,5 @@
+Fasternet(GELU) + AFPN + SimpleHead = 0.248, latency: 12ms
+Fasternet(RELU) + AFPN + SimpleHead = 0.235 latency: 12ms
+ShuffleNetV2 + AFPN + SimpleHead = 0.209 latency: 14ms
+Fasternet(GELU) + _ + SimpleHead = 0.158 latency: 3.7ms
+Fasternet(GELU) + SAF + SimpleHead =

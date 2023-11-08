@@ -27,7 +27,7 @@ def detect(img, model):
     print("forward time:%fms"%time)
 
     # 特征图后处理
-    output = handle_preds(preds, device, num_keypoints=4, conf_thresh=0.65)
+    output = handle_preds(preds, device, num_keypoints=4, conf_thresh=0.35)
 # print(output)
 
     # 加载label names

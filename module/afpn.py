@@ -216,15 +216,20 @@ class ScaleBlockBody(nn.Module):
         x1 = self.blocks_top1(x1)
         x2 = self.blocks_mid1(x2)
         x3 = self.blocks_bot1(x3)
-
+        
+        # x1, x2
         top = self.asff_top1(x1, self.upsample_mid1_2(x2))
+        # x1 ,x2
         mid = self.asff_mid1(self.downsample_top1_2(x1), x2)
 
         x1 = self.blocks_top2(top)
         x2 = self.blocks_mid2(mid)
 
+
         top = self.asff_top2(x1, self.upsample_mid2_2(x2), self.upsample_bot2_4(x3))
+
         mid = self.asff_mid2(self.downsample_top2_2(x1), x2, self.upsample_bot2_2(x3))
+
         bot = self.asff_bot2(self.downsample_top2_4(x1), self.downsample_mid2_2(x2), x3)
 
         top = self.blocks_top3(top)

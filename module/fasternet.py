@@ -320,12 +320,13 @@ class FasterNet(nn.Module):
                 norm_layer = getattr(self, f'norm{idx}')
                 x_out = norm_layer(x)
                 outs.append(x_out)
-
-        return outs
+        
+        return outs[-3:]
       
 def fastenet_simplest():
   model = FasterNet(
         mlp_ratio=2.0,
+        in_chans=3,
         embed_dim=40,
         depths=(1, 4, 2),
         patch_size=4,
@@ -336,7 +337,7 @@ def fastenet_simplest():
         drop_path_rate=0,
         norm_layer='BN',
         n_div=4,
-        act_layer='RELU',
+        act_layer='GELU',
         )
   return model
  

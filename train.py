@@ -9,10 +9,13 @@ from thop import profile
 from torch.cuda import profiler
 
 from utils.tool import *
-from utils.datasets import *
-from utils.evaluation import CocoDetectionEvaluator
+# from utils.datasets import *
+# from utils.evaluation import CocoDetectionEvaluator
+from utils.cocodataset import *
+from utils.coco_evaluation import CocoDetectionEvaluator
 
-from module.loss import DetectorLoss
+# from module.loss import DetectorLoss
+from module.coco_loss import DetectorLoss
 from module.faster_points import Detector as FasterPoints
 
 # 指定后端设备CUDA&CPU
@@ -71,8 +74,10 @@ class FastestDet:
         self.evaluation = CocoDetectionEvaluator(self.cfg.names, device , num_keypoints=self.cfg.num_keypoints)
 
         # 数据集加载
-        val_dataset = TensorDataset(self.cfg.val_txt, self.cfg.input_width, self.cfg.input_height, False)
-        train_dataset = TensorDataset(self.cfg.train_txt, self.cfg.input_width, self.cfg.input_height, True)
+        # val_dataset = TensorDataset(self.cfg.val_txt, self.cfg.input_width, self.cfg.input_height, False)
+        # train_dataset = TensorDataset(self.cfg.train_txt, self.cfg.input_width, self.cfg.input_height, True)
+        val_dataset = COCODataset(self.cfg.val_txt, self.cfg.input_width, self.cfg.input_height, False, split='val2017')
+        train_dataset = COCODataset(self.cfg.train_txt, self.cfg.input_width, self.cfg.input_height, True, split='train2017')
 
         #验证集
         self.val_dataloader = torch.utils.data.DataLoader(val_dataset,
@@ -131,7 +136,7 @@ class FastestDet:
                 batch_num += 1
 
             # 模型验证及保存
-            if epoch % 10 == 0 and epoch > 0 and total < 2:
+            if epoch % 1 == 0 and epoch > 0 and total < 2:
                 self.model.eval()
                 # 模型评估
                 torch.save(self.model.state_dict(), "checkpoint/%d-epoch.pth"%(epoch))
@@ -144,5 +149,6 @@ class FastestDet:
             self.scheduler.step()
 
 if __name__ == "__main__":
+    torch.manual_seed(3407)
     model = FastestDet()
     model.train()

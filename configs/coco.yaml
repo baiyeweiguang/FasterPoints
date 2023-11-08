@@ -1,0 +1,19 @@
+DATASET:
+  TRAIN: "/mnt/zcf/archivecc/coco2017"
+  VAL: "/mnt/zcf/archivecc/coco2017"
+  NAMES: "configs/coco.names"
+MODEL:
+  NC: 80
+  NPTS: 2 
+  INPUT_WIDTH: 352
+  INPUT_HEIGHT: 352
+TRAIN:
+  LR: 0.001
+  THRESH: 0.25
+  WARMUP: true
+  BATCH_SIZE: 128
+  END_EPOCH: 300
+  MILESTIONES:
+    - 100
+    - 200
+    - 250
